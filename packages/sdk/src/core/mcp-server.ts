@@ -12,7 +12,8 @@ import { ZGInference } from '../compute/inference.js';
 export class AgentMCPServer {
   private app: ReturnType<typeof express>;
   private httpServer: import('http').Server | null = null;
-  private mcpServer: McpServer;
+  // Session map: mcp-session-id → transport (McpServer is recreated per session init)
+  private mcpSessions = new Map<string, StreamableHTTPServerTransport>();
   private session: SessionStorage | null = null;
   private ens: ENSIdentity | null = null;
   private compute: ZGInference | null = null;
@@ -22,21 +23,22 @@ export class AgentMCPServer {
     this.app = express();
     this.app.use(express.json({ limit: '10mb' }));
 
-    this.mcpServer = new McpServer({
-      name: config.name,
-      version: '1.0.0',
-    });
-
     if (config.storage) this.session = new SessionStorage(config.storage);
     if (config.ens) this.ens = new ENSIdentity(config.ens);
     if (config.compute) this.compute = new ZGInference(config.compute);
 
-    this.registerTools();
     this.setupRoutes();
   }
 
-  private registerTools(): void {
-    this.mcpServer.tool(
+  /** Create a fresh McpServer with tools registered — called once per MCP session. */
+  private createMcpServer(): McpServer {
+    const server = new McpServer({ name: this.config.name, version: '1.0.0' });
+    this.registerTools(server);
+    return server;
+  }
+
+  private registerTools(server: McpServer): void {
+    server.tool(
       'call_agent',
       `Call the ${this.config.name} agent. ${this.config.description}`,
       {
@@ -75,7 +77,7 @@ export class AgentMCPServer {
       },
     );
 
-    this.mcpServer.tool(
+    server.tool(
       'get_capabilities',
       `Get current capabilities, pricing, and reputation of ${this.config.name}`,
       {},
@@ -105,16 +107,45 @@ export class AgentMCPServer {
     });
 
     // MCP endpoint — x402 required on both POST and GET
+    // Session-based: each client session gets its own McpServer+transport pair.
     this.app.post('/mcp', x402Middleware(this.config.pricing), async (req: Request, res: Response) => {
-      const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: () => crypto.randomUUID() });
-      await this.mcpServer.connect(transport);
-      await transport.handleRequest(req, res, req.body);
+      const sessionId = req.headers['mcp-session-id'] as string | undefined;
+
+      if (sessionId && this.mcpSessions.has(sessionId)) {
+        // Existing session: reuse the transport
+        const transport = this.mcpSessions.get(sessionId)!;
+        await transport.handleRequest(req, res, req.body);
+      } else {
+        // New session: create fresh server+transport pair
+        const transport = new StreamableHTTPServerTransport({
+          sessionIdGenerator: () => crypto.randomUUID(),
+          onsessioninitialized: (sid: string) => {
+            this.mcpSessions.set(sid, transport);
+          },
+        });
+        const server = this.createMcpServer();
+        await server.connect(transport);
+        await transport.handleRequest(req, res, req.body);
+      }
     });
 
     this.app.get('/mcp', x402Middleware(this.config.pricing), async (req: Request, res: Response) => {
-      const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: () => crypto.randomUUID() });
-      await this.mcpServer.connect(transport);
-      await transport.handleRequest(req, res);
+      const sessionId = req.headers['mcp-session-id'] as string | undefined;
+
+      if (sessionId && this.mcpSessions.has(sessionId)) {
+        const transport = this.mcpSessions.get(sessionId)!;
+        await transport.handleRequest(req, res);
+      } else {
+        const transport = new StreamableHTTPServerTransport({
+          sessionIdGenerator: () => crypto.randomUUID(),
+          onsessioninitialized: (sid: string) => {
+            this.mcpSessions.set(sid, transport);
+          },
+        });
+        const server = this.createMcpServer();
+        await server.connect(transport);
+        await transport.handleRequest(req, res);
+      }
     });
   }
 

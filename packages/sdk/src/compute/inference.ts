@@ -1,7 +1,8 @@
 // packages/sdk/src/compute/inference.ts
 import { ethers } from 'ethers';
-import { createZGComputeNetworkBroker } from '@0glabs/0g-serving-broker';
 import type { ComputeConfig } from '../types.js';
+// Lazy import: 0G serving broker has ESM compatibility issues on Node 24 at top-level import.
+// Import dynamically inside init() to avoid load-time failures when compute is not configured.
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -30,6 +31,7 @@ export class ZGInference {
   async init(): Promise<void> {
     if (this.initialized) return;
 
+    const { createZGComputeNetworkBroker } = await import('@0glabs/0g-serving-broker');
     const provider = new ethers.JsonRpcProvider(this.config.rpcUrl);
     const wallet = new ethers.Wallet(this.config.privateKey, provider);
     // Cast: 0G SDK bundles CJS ethers; this package uses ESM ethers.
