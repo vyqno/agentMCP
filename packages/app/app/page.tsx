@@ -79,12 +79,6 @@ export default async function HomePage() {
           </div>
         )}
       </section>
-
-      <footer className="border-t border-gray-200 bg-white mt-auto">
-        <div className="max-w-6xl mx-auto px-6 py-6 text-center text-sm text-gray-400">
-          Discovery via ENS · Sessions on 0G Storage · Inference on 0G Compute · Payments via KeeperHub x402
-        </div>
-      </footer>
     </main>
   );
 }
