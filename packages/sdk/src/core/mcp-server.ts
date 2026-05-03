@@ -46,12 +46,19 @@ export class AgentMCPServer {
         callerId: z.string().optional().describe('Caller ID for session continuity'),
       },
       async ({ task, callerId = 'anonymous' }) => {
+        const fullName = this.config.ens
+          ? `${this.config.name}.${this.config.ens.parentName}`
+          : null;
+
+        // Write live state to ENS BEFORE running — non-blocking
+        if (this.ens && fullName) {
+          this.ens.setLiveState(fullName, `processing:${task.slice(0, 80)}`).catch(() => {});
+        }
+
         const agentSession: AgentSession = this.session
           ? await this.session.load(this.config.name, callerId)
           : this.emptySession(callerId);
 
-        // CRITICAL: inject compute via non-enumerable property so JSON.stringify excludes it
-        // This prevents the broker object from being serialized and uploaded to 0G Storage
         if (this.compute) {
           Object.defineProperty(agentSession.memory, '__compute', {
             value: this.compute,
@@ -65,12 +72,18 @@ export class AgentMCPServer {
 
         if (this.session) await this.session.save(agentSession);
 
-        // Update ENS stats every 10 calls — non-blocking
         this.callCount += 1;
-        if (this.ens && this.config.ens && this.callCount % 10 === 0) {
-          const fullName = `${this.config.name}.${this.config.ens.parentName}`;
-          this.ens.updateStats(fullName, agentSession.callCount, agentSession.reputationScore)
-            .catch(console.error);
+
+        // After call: write proof + clear state + periodic stats — all non-blocking
+        if (this.ens && fullName) {
+          const proofHash = (agentSession.memory as any).__lastProof ?? `agentmcp-${Date.now()}-${this.callCount}`;
+
+          this.ens.setProofAndClearState(fullName, proofHash).catch(() => {});
+
+          if (this.callCount % 10 === 0) {
+            this.ens.updateStats(fullName, agentSession.callCount, agentSession.reputationScore)
+              .catch(console.error);
+          }
         }
 
         return { content: [{ type: 'text' as const, text: result }] };

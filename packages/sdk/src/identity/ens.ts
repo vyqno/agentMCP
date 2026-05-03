@@ -38,6 +38,10 @@ export const AGENT_TEXT_KEYS = {
   lastUpdated: 'agentmcp.updatedAt', // ISO timestamp
   chainId: 'agentmcp.chainId',       // payment chain
   payTo: 'agentmcp.payTo',           // payment address
+  // Proof chain — updated on every call
+  state:   'agentmcp.state',    // "idle" | "processing:task description"
+  proof:   'agentmcp.proof',    // 0G Compute TEE proof hash from last call
+  keeper:  'agentmcp.keeper',   // KeeperHub workflow ID watching this agent
 } as const;
 
 export class ENSIdentity {
@@ -168,5 +172,23 @@ export class ENSIdentity {
       this.setText(ensName, AGENT_TEXT_KEYS.reputation, reputationScore.toFixed(1)),
       this.setText(ensName, AGENT_TEXT_KEYS.lastUpdated, new Date().toISOString()),
     ]);
+  }
+
+  /** Set live state — called BEFORE handler runs. Non-blocking (fire and forget). */
+  async setLiveState(ensName: string, state: string): Promise<void> {
+    await this.setText(ensName, AGENT_TEXT_KEYS.state, state).catch(() => {});
+  }
+
+  /** Clear live state + write proof hash — called AFTER handler completes. Non-blocking. */
+  async setProofAndClearState(ensName: string, proofHash: string): Promise<void> {
+    await Promise.all([
+      this.setText(ensName, AGENT_TEXT_KEYS.proof, proofHash),
+      this.setText(ensName, AGENT_TEXT_KEYS.state, 'idle'),
+    ]).catch(() => {});
+  }
+
+  /** Record the KeeperHub workflow ID watching this agent. Non-blocking. */
+  async setKeeperWorkflow(ensName: string, workflowId: string): Promise<void> {
+    await this.setText(ensName, AGENT_TEXT_KEYS.keeper, workflowId).catch(() => {});
   }
 }
