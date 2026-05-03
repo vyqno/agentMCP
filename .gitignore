@@ -55,6 +55,7 @@ output/
 .0g-skills/
 
 # Build and temp directories
+.vercel/
 *.tsbuildinfo
 dist/
 build/
