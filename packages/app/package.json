@@ -5,12 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.18.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^2.14.0",
+    "tailwind-merge": "^2.6.0",
+    "thirdweb": "^5.92.0",
     "viem": "^2.21.0"
   },
   "devDependencies": {
