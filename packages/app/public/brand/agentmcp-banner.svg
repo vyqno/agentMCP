@@ -1,0 +1,69 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#030303"/>
+  <path d="M0 0H1200V630H0V0Z" fill="url(#bg)"/>
+  <g opacity="0.18">
+    <path d="M0 132H1200" stroke="white"/>
+    <path d="M0 264H1200" stroke="white"/>
+    <path d="M0 396H1200" stroke="white"/>
+    <path d="M0 528H1200" stroke="white"/>
+    <path d="M150 0V630" stroke="white"/>
+    <path d="M300 0V630" stroke="white"/>
+    <path d="M450 0V630" stroke="white"/>
+    <path d="M600 0V630" stroke="white"/>
+    <path d="M750 0V630" stroke="white"/>
+    <path d="M900 0V630" stroke="white"/>
+    <path d="M1050 0V630" stroke="white"/>
+  </g>
+  <circle cx="970" cy="120" r="260" fill="#2563EB" opacity="0.24"/>
+  <circle cx="280" cy="530" r="240" fill="#14B8A6" opacity="0.18"/>
+  <rect x="72" y="72" width="1056" height="486" rx="44" fill="#090909" fill-opacity="0.76" stroke="url(#stroke)" stroke-width="2"/>
+  <g transform="translate(118 124)">
+    <rect width="112" height="112" rx="28" fill="#050505" stroke="url(#markStroke)" stroke-width="2"/>
+    <circle cx="56" cy="56" r="35" fill="url(#markFill)" opacity="0.88"/>
+    <path d="M36 62C36 50.954 44.954 42 56 42C67.046 42 76 50.954 76 62V76H64V62C64 57.582 60.418 54 56 54C51.582 54 48 57.582 48 62V76H36V62Z" fill="white"/>
+    <path d="M30 80H82V92H30V80Z" fill="white"/>
+    <path d="M31 54H43V66H31V54Z" fill="#2DD4BF"/>
+    <path d="M69 54H81V66H69V54Z" fill="#60A5FA"/>
+    <path d="M50 24H62V36H50V24Z" fill="#A78BFA"/>
+  </g>
+  <text x="260" y="168" fill="white" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="750">AgentMCP</text>
+  <text x="260" y="214" fill="#B8BDC7" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="500">npm for AI agents</text>
+  <text x="118" y="326" fill="white" font-family="Inter, Arial, sans-serif" font-size="68" font-weight="800">Payable MCP servers</text>
+  <text x="118" y="402" fill="white" font-family="Inter, Arial, sans-serif" font-size="68" font-weight="800">for autonomous agents.</text>
+  <text x="122" y="464" fill="#B8BDC7" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="500">ENS identity + 0G memory + KeeperHub x402</text>
+  <g transform="translate(118 500)">
+    <rect width="172" height="46" rx="23" fill="white"/>
+    <text x="28" y="30" fill="#050505" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700">Wrap an agent</text>
+  </g>
+  <g transform="translate(314 500)">
+    <rect width="206" height="46" rx="23" fill="#111827" stroke="#3B4454"/>
+    <text x="28" y="30" fill="#D5DAE3" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700">Discover via ENS</text>
+  </g>
+  <g transform="translate(860 434)">
+    <rect width="210" height="84" rx="20" fill="#0F172A" stroke="#263247"/>
+    <text x="22" y="35" fill="#2DD4BF" font-family="JetBrains Mono, monospace" font-size="17" font-weight="700">agentmcp.state</text>
+    <text x="22" y="61" fill="#E5E7EB" font-family="JetBrains Mono, monospace" font-size="16">idle_verified</text>
+  </g>
+  <defs>
+    <radialGradient id="bg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(860 166) rotate(151.778) scale(752.876 508.372)">
+      <stop stop-color="#101A3A"/>
+      <stop offset="0.55" stop-color="#050505"/>
+      <stop offset="1" stop-color="#071711"/>
+    </radialGradient>
+    <linearGradient id="stroke" x1="94" y1="91" x2="1083" y2="549" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.48" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <linearGradient id="markStroke" x1="8" y1="8" x2="104" y2="104" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.52" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <radialGradient id="markFill" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(50 43) rotate(55.4915) scale(65.7951)">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.48" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </radialGradient>
+  </defs>
+</svg>

@@ -1,0 +1,31 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="104" fill="#050505"/>
+  <rect x="1" y="1" width="510" height="510" rx="103" stroke="url(#border)" stroke-width="2"/>
+  <g filter="url(#glow)">
+    <circle cx="256" cy="256" r="164" fill="url(#core)" opacity="0.86"/>
+  </g>
+  <path d="M166 282C166 232.294 206.294 192 256 192C305.706 192 346 232.294 346 282V328H302V282C302 256.595 281.405 236 256 236C230.595 236 210 256.595 210 282V328H166V282Z" fill="white"/>
+  <path d="M144 340H368V388H144V340Z" fill="white"/>
+  <path d="M168 134H344C362.778 134 378 149.222 378 168V230H334V178H178V230H134V168C134 149.222 149.222 134 168 134Z" fill="white" opacity="0.92"/>
+  <path d="M128 258H176V306H128V258Z" fill="#2DD4BF"/>
+  <path d="M336 258H384V306H336V258Z" fill="#60A5FA"/>
+  <path d="M232 104H280V152H232V104Z" fill="#A78BFA"/>
+  <path d="M226 356H286V376H226V356Z" fill="#050505"/>
+  <defs>
+    <radialGradient id="core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(230 198) rotate(58.2413) scale(247.134)">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.46" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </radialGradient>
+    <linearGradient id="border" x1="64" y1="38" x2="448" y2="474" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.48" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <filter id="glow" x="42" y="42" width="428" height="428" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="25" result="effect1_foregroundBlur_1_3"/>
+    </filter>
+  </defs>
+</svg>
