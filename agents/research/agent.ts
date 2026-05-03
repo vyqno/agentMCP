@@ -31,5 +31,29 @@ export const researchHandler: AgentHandler = async (input, session) => {
   pastResearch.unshift({ query: task.slice(0, 80), summary: result.slice(0, 200) });
   session.memory.pastResearch = pastResearch.slice(0, 20);
 
+  // Share significant insights with other agents via 0G Storage + ENS
+  const storageKey = process.env.STORAGE_PRIVATE_KEY;
+  if (storageKey && result.length > 100) {
+    const { KnowledgeSharing } = await import('@agentmcp/sdk');
+    const ks = new KnowledgeSharing(
+      {
+        indexerUrl: process.env.STORAGE_INDEXER ?? 'https://indexer-storage-testnet-turbo.0g.ai',
+        rpcUrl: process.env.ZEROG_RPC_URL ?? 'https://evmrpc-testnet.0g.ai',
+        privateKey: storageKey,
+      },
+      process.env.ENS_PRIVATE_KEY ? {
+        parentName: 'agentmcp.eth',
+        privateKey: process.env.ENS_PRIVATE_KEY as `0x${string}`,
+        rpcUrl: process.env.SEPOLIA_RPC_URL ?? 'https://rpc.ankr.com/eth_sepolia',
+      } : undefined,
+    );
+    ks.shareInsight('research', 'agentmcp.eth', {
+      agentName: 'research',
+      topic: task.slice(0, 60),
+      content: result.slice(0, 500),
+      timestamp: new Date().toISOString(),
+    }).catch(() => {});
+  }
+
   return result;
 };

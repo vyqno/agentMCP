@@ -18,6 +18,11 @@ export type {
 export type { ChatMessage, InferenceResult } from './compute/inference.js';
 export type { PaymentProof, PaymentResult } from './payment/x402.js';
 
+export { createSentinelWorkflow } from './sentinel/keeper.js';
+export type { SentinelConfig, SentinelResult } from './sentinel/keeper.js';
+export { KnowledgeSharing } from './knowledge/sharing.js';
+export type { SharedInsight } from './knowledge/sharing.js';
+
 import type { AgentConfig } from './types.js';
 import { AgentMCPServer } from './core/mcp-server.js';
 

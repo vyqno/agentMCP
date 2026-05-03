@@ -9,6 +9,14 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./sentinel": {
+      "import": "./dist/sentinel/keeper.js",
+      "types": "./dist/sentinel/keeper.d.ts"
+    },
+    "./knowledge": {
+      "import": "./dist/knowledge/sharing.js",
+      "types": "./dist/knowledge/sharing.d.ts"
     }
   },
   "scripts": {
