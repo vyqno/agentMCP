@@ -31,7 +31,7 @@ export default async function HomePage() {
   const agents = await getAgents();
 
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
       <header className="border-b border-gray-200 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div>
@@ -79,6 +79,6 @@ export default async function HomePage() {
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }
