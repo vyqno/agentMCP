@@ -5,9 +5,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
 }
 
-export function Button({ variant = 'primary', size = 'md', className, children, ...props }: ButtonProps) {
+export function Button({ variant = 'primary', size = 'md', type = 'button', className, children, ...props }: ButtonProps) {
   return (
     <button
+      type={type}
       className={cn(
         'inline-flex items-center justify-center font-medium transition-all duration-150 rounded-pill disabled:opacity-40 disabled:cursor-not-allowed',
         {
